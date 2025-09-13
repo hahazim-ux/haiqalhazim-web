@@ -6,14 +6,25 @@ import type { DefineComponent } from 'vue';
 import { createApp, h } from 'vue';
 import { initializeTheme } from './composables/useAppearance';
 
+import { ZiggyVue, type Config } from 'ziggy-js';
+import { Ziggy as ziggyConfig } from './ziggy';
+
+const Ziggy: Config = ziggyConfig as unknown as Config;
+window.Ziggy = Ziggy;
+
 const appName = import.meta.env.VITE_APP_NAME || 'Laravel';
 
 createInertiaApp({
     title: (title) => (title ? `${title} - ${appName}` : appName),
-    resolve: (name) => resolvePageComponent(`./pages/${name}.vue`, import.meta.glob<DefineComponent>('./pages/**/*.vue')),
+    resolve: (name) =>
+        resolvePageComponent(
+            `./pages/${name}.vue`,
+            import.meta.glob<DefineComponent>('./pages/**/*.vue')
+        ),
     setup({ el, App, props, plugin }) {
         createApp({ render: () => h(App, props) })
             .use(plugin)
+            .use(ZiggyVue, Ziggy) 
             .mount(el);
     },
     progress: {
@@ -21,5 +32,5 @@ createInertiaApp({
     },
 });
 
-// This will set light / dark mode on page load...
+// set theme
 initializeTheme();
