@@ -42,7 +42,7 @@ const breadcrumbs: BreadcrumbItem[] = [
 
 ];
 
-const page = usePage()
+// const page = usePage()
 
 const handleDelete = (id: number) => {
     if(confirm('Do you really want to delete this product?')){
